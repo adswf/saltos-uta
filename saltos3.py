@@ -25,6 +25,7 @@ def cortar_lineas(linea, lista, corte_en):
     substring = linea
     lista.append(substring)
 
+
 #   la lista de salida debe ser un lista-elemento de la lista final o auxiliar
 #######################################################################################
 
@@ -66,7 +67,7 @@ def principal(entrada, salida, corte_en, saltos_en):
 
     original = original.split("\n")
     lineas_original = len(original)
-    print("  Líneas de entrada: " + str(lineas_original))
+
     original = "\n".join(original)
 
     #   Convertido a lista para ver cuantas lineas tiene originalmente
@@ -96,7 +97,7 @@ def principal(entrada, salida, corte_en, saltos_en):
     #   Lista de listas que nos servira de auxiliar
     #########################################################################
 
-    #   Para cada elemento en original, si es no tiene, agregar a la lista
+    #   Para cada elemento en original, si es que no tiene あ, agregar a la lista
     #   Si es que si tiene, agregar a la lista y agregar listas vacias cuantas
     #   veces あ tenga
 
@@ -108,9 +109,9 @@ def principal(entrada, salida, corte_en, saltos_en):
                 auxiliar.append("")
 
     #   Lista auxiliar donde tendremos por cada elemento una caja de texto llena
-    #   y las lineas vacias como elementos ""
-
+    #   y las lineas vacias como elementos
     #########################################################################################
+
 
     auxiliar2 = [[] for aux2 in range(len(auxiliar))]
 
@@ -167,10 +168,10 @@ def principal(entrada, salida, corte_en, saltos_en):
                     if elemento_sub.find("あ") < saltos_en:
                         if len(elemento_sub) <= corte_en:
                             auxiliar2[i].append(elemento)
-                        elif len(elemento_sub) >= corte_en:
-                            primero = elemento_sub[:elemento.find("あ")]
+                        elif len(elemento_sub) > corte_en:
+                            primero = elemento_sub[:elemento_sub.find("あ")]
                             auxiliar2[i].append(primero)
-                            resto = elemento[elemento.find("あ") + 1:]
+                            resto = elemento[elemento_sub.find("あ") + 1:]
                             cortar_lineas(resto, auxiliar2[i], corte_en)
                             # regresar_retirado()
                             elemento_sub = "あ".join(auxiliar2[i])
@@ -188,10 +189,10 @@ def principal(entrada, salida, corte_en, saltos_en):
                         auxiliar2[i].append(resultado)
                         ################################
                 elif ocurrencias2 > 1:
-                    if elemento.find("あ") < saltos_en:
-                        primero = elemento[:elemento.find("あ")]
+                    if elemento_sub.find("あ") < saltos_en:
+                        primero = elemento_sub[:elemento_sub.find("あ")]
                         auxiliar2[i].append(primero)
-                        resto = elemento[elemento.find("あ") + 1:]
+                        resto = elemento_sub[elemento_sub.find("あ") + 1:]
                         resto = resto.replace("あ", " ")
                         cortar_lineas(resto, auxiliar2[i], corte_en)
                         # regresar_retirado()
@@ -231,7 +232,8 @@ def principal(entrada, salida, corte_en, saltos_en):
     #######################################################################
 
     lineas_salida = len(final)
-    print("  Líneas de salida: " + str(lineas_salida))
+    print("Archivo actual: " + entrada + " - Líneas entrada: " + str(lineas_original) + " - Líneas salida: " + str(lineas_salida))
+
     final = "\n".join(final)
 
     try:
@@ -244,10 +246,6 @@ def principal(entrada, salida, corte_en, saltos_en):
         f.write(final)
         f.close()
     else:
-        ##  C:\Users\adswf\AppData\Local\Programs\Python\Python38\python.exe
-        ##  C:/Users/adswf/Desktop/arreglar/saltos3.py
-
-        #   C:\Users\adswf\Desktop\arreglar\11_01_000S.txt
         salida = salida[salida.rfind("\\"):]
         f = open(os.getcwd() + "/arreglados/" + salida, "w", encoding="utf-8")
         f.write(final)
@@ -261,11 +259,11 @@ if len(sys.argv) == 2:
     if sys.argv[1] == "*":
         for entrada in txt:
             principal(entrada, entrada, corte_en, saltos_en)
-            print("Se arregló el archivo: " + entrada)
+            print("Listo")
         print("Se arreglaron: " + str(len(txt)) + " archivos")
     else:
         principal(sys.argv[1], sys.argv[1], corte_en, saltos_en)
-        print("Se arregló el archivo: " + sys.argv[1] + " y se guardó en la carpeta: arreglados")
+        print("Listo")
 
 
 elif len(sys.argv) == 1:
@@ -288,7 +286,7 @@ elif len(sys.argv) == 1:
             if salida != "":
                 salida = salida[salida.rfind("/") + 1:]
                 principal(entrada, salida, corte_en, saltos_en)
-                print("Se arregló el archivo: " + entrada)
+                print("Listo.")
             else:
                 print("Error: No se seleccionó una ubicación válida")
         else:
@@ -342,7 +340,7 @@ else: # len(sys.argv) >= 3
     args = sys.argv[1:]
     for arg in args:
         principal(arg, arg, corte_en, saltos_en)
-        print("Se arregló el archivo: " + arg)
+        print("Listo")
     print("Se arreglaron: " + str(len(args)) + " archivos")
 
 
